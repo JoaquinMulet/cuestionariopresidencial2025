@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Afinidad Presidencial Chile 2025</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- Barra de Progreso -->
+    <div class="progress-bar-container">
+        <div id="progress-bar" class="progress-bar"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Afinidad Presidencial</h1>
+            <p class="intro">
+                Selecciona la opción que mejor te represente.
+            </p>
+        </header>
+
+        <!-- Contenedor para las tarjetas del cuestionario -->
+        <div id="quiz-container">
+            <!-- Las tarjetas de preguntas se insertarán aquí con JavaScript -->
+        </div>
+
+        <!-- Controles de Navegación (solo "Anterior") -->
+        <div id="navigation-controls">
+            <button id="prevBtn" class="nav-btn hidden">← Anterior</button>
+        </div>
+    </div>
+
+    <!-- Tooltip para explicaciones en Hover -->
+    <div id="tooltip" class="tooltip hidden"></div>
+
+    <!-- Modal para Resultados Finales -->
+    <div id="results-modal" class="modal-overlay hidden">
+        <div class="modal-content">
+            <button id="close-modal" class="close-button">&times;</button>
+            <h2>Tu Ranking de Afinidad</h2>
+            <p>Basado en tus 20 respuestas, este es el orden de candidatos con mayor afinidad a tus ideas.</p>
+            <ol id="results-list"></ol>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

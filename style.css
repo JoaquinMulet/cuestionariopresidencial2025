@@ -1,0 +1,276 @@
+/* --- Reseteo y Estilos Base --- */
+:root {
+    --background: #f8f9fa;
+    --card-bg: #ffffff;
+    --text-primary: #212529;
+    --text-secondary: #6c757d;
+    --accent: #4a55a2;
+    --accent-light: #e8eaf6;
+    --border-color: #dee2e6;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.06);
+    --font-family: 'Inter', sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background);
+    color: var(--text-primary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+/* --- Barra de Progreso --- */
+.progress-bar-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 6px;
+    background-color: #e9ecef;
+}
+
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    background-color: var(--accent);
+    transition: width 0.4s ease-in-out;
+}
+
+/* --- Contenedor Principal --- */
+.container {
+    max-width: 600px;
+    width: 100%;
+    background-color: var(--card-bg);
+    padding: 40px 50px;
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+    text-align: center;
+}
+
+header h1 {
+    font-size: 2.5em;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.intro {
+    font-size: 1.1em;
+    color: var(--text-secondary);
+    margin-bottom: 30px;
+}
+
+/* --- Tarjeta de Pregunta --- */
+.question-card {
+    display: none;
+    text-align: left;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.question-card.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.question-card .category {
+    font-size: 0.9em;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 10px;
+    text-transform: uppercase;
+}
+
+.question-card p.question-text {
+    font-weight: 600;
+    font-size: 1.4em;
+    margin-bottom: 25px;
+    line-height: 1.4;
+}
+
+/* --- Opciones de Respuesta --- */
+.option {
+    display: block;
+    padding: 15px 20px;
+    margin-bottom: 12px;
+    background-color: #fff;
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 1em;
+    font-weight: 500;
+}
+
+.option:hover {
+    border-color: var(--accent);
+    background-color: #fcfcff;
+}
+
+.option input[type="radio"] {
+    display: none; /* Ocultamos el radio button real */
+}
+
+.option.selected {
+    border-color: var(--accent);
+    background-color: var(--accent-light);
+    color: var(--accent);
+    font-weight: 600;
+}
+
+/* --- Navegación --- */
+#navigation-controls {
+    margin-top: 30px;
+    text-align: center;
+}
+
+.nav-btn {
+    padding: 10px 20px;
+    font-size: 1em;
+    font-weight: 600;
+    color: var(--text-secondary);
+    background-color: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-btn:hover {
+    background-color: #f1f3f5;
+}
+
+/* --- Tooltip --- */
+.tooltip {
+    position: absolute;
+    background-color: var(--text-primary);
+    color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    font-size: 0.95em;
+    max-width: 350px;
+    z-index: 1000;
+    pointer-events: none; /* Para que no interfiera con el mouse */
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.tooltip.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* --- Modal de Resultados --- */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay:not(.hidden) {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.modal-content {
+    background: var(--card-bg);
+    padding: 40px;
+    border-radius: 16px;
+    max-width: 500px;
+    width: 90%;
+    position: relative;
+    transform: scale(0.9);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay:not(.hidden) .modal-content {
+    transform: scale(1);
+}
+
+.close-button {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    font-size: 2em;
+    color: #aaa;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.modal-content h2 {
+    text-align: center;
+    color: var(--accent);
+    margin-bottom: 10px;
+}
+.modal-content p {
+    text-align: center;
+    margin-bottom: 25px;
+    color: var(--text-secondary);
+}
+
+#results-list {
+    list-style: none;
+    padding: 0;
+}
+
+#results-list li {
+    background-color: #f8f9fa;
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 500;
+}
+
+.score {
+    font-weight: bold;
+    color: var(--accent);
+    font-size: 1.1em;
+    background-color: var(--accent-light);
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* --- Responsividad --- */
+@media (max-width: 600px) {
+    .container {
+        padding: 25px;
+    }
+    header h1 {
+        font-size: 2em;
+    }
+    .question-card p.question-text {
+        font-size: 1.2em;
+    }
+}
