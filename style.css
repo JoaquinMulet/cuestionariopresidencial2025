@@ -273,4 +273,7 @@ header h1 {
     .question-card p.question-text {
         font-size: 1.2em;
     }
+    .option-letter {
+        display: none;
+    }
 }

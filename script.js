@@ -227,7 +227,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 optionsHTML += `
                     <label class="option" data-tooltip="${q.options[key].detail}">
                         <input type="radio" name="question${index}" value="${key}">
-                        ${q.options[key].text}
+                        <span class="option-letter">${key}.</span> ${q.options[key].text}
                     </label>
                 `;
             }
