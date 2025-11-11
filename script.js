@@ -200,7 +200,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const quizContainer = document.getElementById('quiz-container');
     const prevBtn = document.getElementById('prevBtn');
     const progressBar = document.getElementById('progress-bar');
-    // ELIMINADO: const tooltip = document.getElementById('tooltip');
     const resultsModal = document.getElementById('results-modal');
     const closeModalBtn = document.getElementById('close-modal');
     const resultsList = document.getElementById('results-list');
@@ -223,7 +222,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let optionsHTML = '';
             for (const key in q.options) {
-                // MODIFICADO: Nueva estructura para la opción, botón y detalle.
                 optionsHTML += `
                     <div class="option-container">
                         <label class="option">
@@ -253,15 +251,16 @@ document.addEventListener('DOMContentLoaded', () => {
      * Agrega los event listeners a las opciones de respuesta y botones de info.
      */
     function addEventListeners() {
-        // Listener para seleccionar una opción
+        // Listener para seleccionar una opción (cuando se hace click en el radio button)
         document.querySelectorAll('.option input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', handleOptionSelect);
         });
 
-        // NUEVO: Listener para los botones "Más Info"
+        // Listener para los botones "Más Info"
         document.querySelectorAll('.info-btn').forEach(button => {
             button.addEventListener('click', (e) => {
-                e.preventDefault(); // Evita que el click se propague a la etiqueta/radio
+                e.preventDefault(); // Evita que el click en el botón también seleccione la opción.
+                e.stopPropagation(); // Detiene la propagación del evento.
                 const detailPanel = e.target.closest('.option-container').querySelector('.option-detail');
                 detailPanel.classList.toggle('hidden');
             });
@@ -299,10 +298,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function showQuestion(index) {
         const cards = document.querySelectorAll('.question-card');
         cards.forEach(card => card.classList.remove('active'));
-        cards[index].classList.add('active');
+        if (cards[index]) {
+            cards[index].classList.add('active');
+        }
 
         // Actualizar la barra de progreso
-        const progress = ((index + 1) / questions.length) * 100;
+        const progress = ((index) / questions.length) * 100;
         progressBar.style.width = `${progress}%`;
 
         // Restaurar la selección si el usuario retrocede
@@ -320,11 +321,13 @@ document.addEventListener('DOMContentLoaded', () => {
      * Calcula los puntajes de afinidad y muestra el modal con los resultados.
      */
     function calculateAndDisplayResults() {
+        // Asegura que la barra de progreso llegue al 100%
+        progressBar.style.width = '100%';
+
         const scores = {};
         for (const candidate in candidatePositions) {
             scores[candidate] = 0;
             candidatePositions[candidate].forEach((pos, index) => {
-                // Asegurarse de que la pregunta exista antes de comparar
                 if (index < userAnswers.length && userAnswers[index] === pos) {
                     scores[candidate]++;
                 }
@@ -347,10 +350,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         resultsModal.classList.remove('hidden');
     }
-
-    // --- 5. FUNCIONES PARA TOOLTIPS (ELIMINADAS) ---
-
-    // --- 6. EVENT LISTENERS DE NAVEGACIÓN Y MODAL ---
+    
+    // --- EVENT LISTENERS DE NAVEGACIÓN Y MODAL ---
     prevBtn.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;
@@ -366,7 +367,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // --- 7. INICIALIZACIÓN ---
+    // --- INICIALIZACIÓN ---
     loadQuestions();
     showQuestion(0);
 });
