@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. DATOS DEL CUESTIONARIO ---
-    // Todas las preguntas y explicaciones extraídas del informe.
+    // (Los datos de 'questions' y 'candidatePositions' se mantienen sin cambios)
     const questions = [
         // Bloque A: Seguridad y Orden
         {
@@ -185,7 +185,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     ];
-
     const candidatePositions = {
         'E. Matthei':         ['B', 'B', 'B', 'B', 'B', 'A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'A', 'B', 'A', 'B', 'B', 'B', 'A'],
         'J.A. Kast':          ['A', 'A', 'A', 'A', 'B', 'A', 'A', 'A', 'A', 'B', 'B', 'B', 'B', 'A', 'C', 'A', 'A', 'A', 'A', 'A'],
@@ -201,7 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const quizContainer = document.getElementById('quiz-container');
     const prevBtn = document.getElementById('prevBtn');
     const progressBar = document.getElementById('progress-bar');
-    const tooltip = document.getElementById('tooltip');
+    // ELIMINADO: const tooltip = document.getElementById('tooltip');
     const resultsModal = document.getElementById('results-modal');
     const closeModalBtn = document.getElementById('close-modal');
     const resultsList = document.getElementById('results-list');
@@ -224,11 +223,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
             let optionsHTML = '';
             for (const key in q.options) {
+                // MODIFICADO: Nueva estructura para la opción, botón y detalle.
                 optionsHTML += `
-                    <label class="option" data-tooltip="${q.options[key].detail}">
-                        <input type="radio" name="question${index}" value="${key}">
-                        ${q.options[key].text}
-                    </label>
+                    <div class="option-container">
+                        <label class="option">
+                            <input type="radio" name="question${index}" value="${key}">
+                            <span class="option-text">${q.options[key].text}</span>
+                            <button type="button" class="info-btn">Más Info</button>
+                        </label>
+                        <div class="option-detail hidden">
+                            <p>${q.options[key].detail}</p>
+                        </div>
+                    </div>
                 `;
             }
 
@@ -244,17 +250,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Agrega los event listeners a las opciones de respuesta y tooltips.
+     * Agrega los event listeners a las opciones de respuesta y botones de info.
      */
     function addEventListeners() {
+        // Listener para seleccionar una opción
         document.querySelectorAll('.option input[type="radio"]').forEach(radio => {
             radio.addEventListener('change', handleOptionSelect);
         });
 
-        document.querySelectorAll('.option').forEach(option => {
-            option.addEventListener('mouseover', showTooltip);
-            option.addEventListener('mousemove', moveTooltip);
-            option.addEventListener('mouseout', hideTooltip);
+        // NUEVO: Listener para los botones "Más Info"
+        document.querySelectorAll('.info-btn').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Evita que el click se propague a la etiqueta/radio
+                const detailPanel = e.target.closest('.option-container').querySelector('.option-detail');
+                detailPanel.classList.toggle('hidden');
+            });
         });
     }
 
@@ -268,8 +278,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Feedback visual inmediato
         const options = document.querySelectorAll(`input[name="question${questionIndex}"]`);
-        options.forEach(opt => opt.parentElement.classList.remove('selected'));
-        e.target.parentElement.classList.add('selected');
+        options.forEach(opt => opt.closest('.option').classList.remove('selected'));
+        e.target.closest('.option').classList.add('selected');
 
         // Avance automático
         setTimeout(() => {
@@ -299,7 +309,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (userAnswers[index]) {
             const selectedRadio = document.querySelector(`input[name="question${index}"][value="${userAnswers[index]}"]`);
             if (selectedRadio) {
-                selectedRadio.parentElement.classList.add('selected');
+                selectedRadio.closest('.option').classList.add('selected');
             }
         }
         
@@ -338,39 +348,9 @@ document.addEventListener('DOMContentLoaded', () => {
         resultsModal.classList.remove('hidden');
     }
 
-    // --- 5. FUNCIONES PARA TOOLTIPS ---
+    // --- 5. FUNCIONES PARA TOOLTIPS (ELIMINADAS) ---
 
-    function showTooltip(e) {
-        const tooltipText = e.currentTarget.getAttribute('data-tooltip');
-        if (tooltipText) {
-            tooltip.textContent = tooltipText;
-            tooltip.classList.remove('hidden');
-            tooltip.classList.add('visible');
-        }
-    }
-
-    function moveTooltip(e) {
-        // Posiciona el tooltip cerca del cursor, evitando que se salga de la pantalla
-        const x = e.pageX + 15;
-        const y = e.pageY + 15;
-        const tooltipRect = tooltip.getBoundingClientRect();
-        const viewportWidth = window.innerWidth;
-        
-        tooltip.style.top = `${y}px`;
-        if (x + tooltipRect.width > viewportWidth) {
-            tooltip.style.left = `${e.pageX - tooltipRect.width - 15}px`;
-        } else {
-            tooltip.style.left = `${x}px`;
-        }
-    }
-
-    function hideTooltip() {
-        tooltip.classList.remove('visible');
-        tooltip.classList.add('hidden');
-    }
-    
     // --- 6. EVENT LISTENERS DE NAVEGACIÓN Y MODAL ---
-
     prevBtn.addEventListener('click', () => {
         if (currentQuestionIndex > 0) {
             currentQuestionIndex--;

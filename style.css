@@ -99,11 +99,16 @@ header h1 {
     line-height: 1.4;
 }
 
-/* --- Opciones de Respuesta --- */
-.option {
-    display: block;
-    padding: 15px 20px;
+/* --- Opciones de Respuesta (MODIFICADO) --- */
+.option-container {
     margin-bottom: 12px;
+}
+
+.option {
+    display: flex; /* Cambiado para alinear texto y botón */
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;
     background-color: #fff;
     border: 2px solid var(--border-color);
     border-radius: 10px;
@@ -111,6 +116,8 @@ header h1 {
     transition: all 0.2s ease;
     font-size: 1em;
     font-weight: 500;
+    width: 100%;
+    text-align: left; /* Asegura alineación a la izquierda */
 }
 
 .option:hover {
@@ -127,6 +134,47 @@ header h1 {
     background-color: var(--accent-light);
     color: var(--accent);
     font-weight: 600;
+}
+
+.option-text {
+    margin-right: 15px; /* Espacio entre el texto y el botón */
+}
+
+/* --- Botón de "Más Información" (NUEVO) --- */
+.info-btn {
+    background-color: #e9ecef;
+    color: var(--text-secondary);
+    border: none;
+    border-radius: 20px;
+    padding: 6px 12px;
+    font-size: 0.8em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap; /* Evita que el texto se parta */
+    flex-shrink: 0; /* Evita que el botón se encoja */
+}
+
+.info-btn:hover {
+    background-color: #ced4da;
+}
+
+/* --- Panel de Detalle (NUEVO) --- */
+.option-detail {
+    background-color: #f8f9fa;
+    border: 1px solid var(--border-color);
+    border-top: none;
+    padding: 15px 20px;
+    border-radius: 0 0 10px 10px;
+    font-size: 0.95em;
+    line-height: 1.5;
+    color: var(--text-secondary);
+    animation: slideDown 0.3s ease-in-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Navegación --- */
@@ -151,26 +199,7 @@ header h1 {
     background-color: #f1f3f5;
 }
 
-/* --- Tooltip --- */
-.tooltip {
-    position: absolute;
-    background-color: var(--text-primary);
-    color: #fff;
-    padding: 15px;
-    border-radius: 8px;
-    font-size: 0.95em;
-    max-width: 350px;
-    z-index: 1000;
-    pointer-events: none; /* Para que no interfiera con el mouse */
-    opacity: 0;
-    transform: scale(0.95);
-    transition: opacity 0.2s, transform 0.2s;
-}
-
-.tooltip.visible {
-    opacity: 1;
-    transform: scale(1);
-}
+/* --- ELIMINADO: Estilos del Tooltip --- */
 
 /* --- Modal de Resultados --- */
 .modal-overlay {
